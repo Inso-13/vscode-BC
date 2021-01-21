@@ -1,0 +1,70 @@
+{
+	"name": "borland-c",
+	"displayName": "Borland C",
+	"icon": "bcicon.png",
+	"description": "God bless HUST AIA",
+	"author": {"name": "inso"},
+	"publisher": "inso",
+	"version": "1.0.0",
+	"engines": {
+		"vscode": "^1.52.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:borland-c.dosbox",
+		"onCommand:borland-c.bc31",
+		"onCommand:borland-c.bc-compile",
+		"onCommand:borland-c.bc-build"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"type":"object",
+			"title": "Borland C",
+			"properties": {
+				
+			}
+		},
+		"commands": [
+			{
+				"command": "borland-c.dosbox",
+				"title": "启动dosbox"
+			},
+			{
+				"command": "borland-c.bc31",
+				"title": "启动Borland C(BC)"
+			},
+			{
+				"command": "borland-c.bc-compile",
+				"title": "BC单文件编译"
+			},
+			{
+				"command": "borland-c.bc-build",
+				"title": "BC构建工程"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.52.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.15.0",
+		"@typescript-eslint/eslint-plugin": "^4.9.0",
+		"@typescript-eslint/parser": "^4.9.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"typescript": "^4.1.2",
+		"vscode-test": "^1.4.1"
+	}
+}
