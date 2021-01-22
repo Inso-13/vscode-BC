@@ -53,43 +53,51 @@ export function activate(context: vscode.ExtensionContext) {
 		// Display a message box to the user
 	});
 	let disposable3 = vscode.commands.registerCommand('borland-c.bc-compile', () => {
-		// The code you place here will be executed every time your command is executed
-		// eslint-disable-next-line @typescript-eslint/naming-convention
-		if(vscode.workspace.workspaceFolders === undefined)
-		{
-			vscode.window.showErrorMessage("请打开DISK_C文件夹!（文件->打开文件夹）");
-			return;
+        // The code you place here will be executed every time your command is executed
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        if (vscode.workspace.workspaceFolders === undefined) {
+            vscode.window.showErrorMessage("请打开DISK_C文件夹!（文件->打开文件夹）");
+            return;
+        }
+        if (vscode.workspace.workspaceFolders[0].name !== "DISK_C") {
+            vscode.window.showErrorMessage("请打开DISK_C文件夹!（文件->打开文件夹）");
+            return;
+        }
+
+        const root = vscode.workspace.workspaceFolders[0].uri.fsPath + "\\..";
+        const cmd = root + "\\dosbox\\dosbox.exe -conf " + root + "\\dosbox\\bc31.conf -noautoexec -noconsole -c \"mount C " + root + "\\DISK_C\" -c \"path C:\\BORLANDC\\BIN\" -c C: -c \"bcc -w1 -nC:\\${relativeFileDirname}\\ -l C:\\BORLANDC\\LIB\\GRAPHICS.LIB C:\\${relativeFileDirname}\\${fileBasenameNoExtension}.c\" -c C:\\${relativeFileDirname}\\${fileBasenameNoExtension}.exe";
+        vscode.tasks.executeTask(new vscode.Task({ "type": "shell" }, vscode.TaskScope.Workspace, "bc-compile", 'npm', new vscode.ShellExecution(cmd)));
+        // Display a message box to the user
+    });
+    let disposable4 = vscode.commands.registerCommand('borland-c.bc-build', () => {
+        // The code you place here will be executed every time your command is executed
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        if (vscode.workspace.workspaceFolders === undefined) {
+            vscode.window.showErrorMessage("请打开DISK_C文件夹!（文件->打开文件夹）");
+            return;
+        }
+        if (vscode.workspace.workspaceFolders[0].name !== "DISK_C") {
+            vscode.window.showErrorMessage("请打开DISK_C文件夹!（文件->打开文件夹）");
+            return;
 		}
-		if(vscode.workspace.workspaceFolders[0].name !== "DISK_C")
-		{
-			vscode.window.showErrorMessage("请打开DISK_C文件夹!（文件->打开文件夹）");
-			return;
-		}
+
+        const root = vscode.workspace.workspaceFolders[0].uri.fsPath + "\\..";
 		
-		const root = vscode.workspace.workspaceFolders[0].uri.fsPath + "\\..";
-		const cmd = root + "\\dosbox\\dosbox.exe -conf "+ root + "\\dosbox\\dosbox.conf -noconsole -c C: -c \"bcc -w1 -nC:\\${relativeFileDirname}\\ -l C:\\BORLANDC\\LIB\\GRAPHICS.LIB C:\\${relativeFileDirname}\\${fileBasenameNoExtension}.c\" -c C:\\${relativeFileDirname}\\${fileBasenameNoExtension}.exe";
-		vscode.tasks.executeTask(new vscode.Task({"type":"shell"},vscode.TaskScope.Workspace,"bc-compile",'npm',new vscode.ShellExecution(cmd)));
-		// Display a message box to the user
-	});
-	let disposable4 = vscode.commands.registerCommand('borland-c.bc-build', () => {
-		// The code you place here will be executed every time your command is executed
-		// eslint-disable-next-line @typescript-eslint/naming-convention
-		if(vscode.workspace.workspaceFolders === undefined)
+		let dir = vscode.workspace.getConfiguration("BC").get("prj_out_dir");
+		let cmd = root;
+		if(dir === undefined)
 		{
-			vscode.window.showErrorMessage("请打开DISK_C文件夹!（文件->打开文件夹）");
-			return;
+			cmd = root + "\\dosbox\\dosbox.exe -conf " + root + "\\dosbox\\bc31.conf -noautoexec -noconsole -c \"mount C " + root + "\\DISK_C\" -c \"path C:\\BORLANDC\\BIN\"  -c C: -c \"cd ${relativeFileDirname}\" -c \"prj2mak ${fileBasenameNoExtension}.prj ${fileBasenameNoExtension}.mak\" -c \"make -f ${fileBasenameNoExtension}.mak\" -c ${fileBasenameNoExtension}.exe";
+
 		}
-		if(vscode.workspace.workspaceFolders[0].name !== "DISK_C")
+		else
 		{
-			vscode.window.showErrorMessage("请打开DISK_C文件夹!（文件->打开文件夹）");
-			return;
+			cmd = root + "\\dosbox\\dosbox.exe -conf " + root + "\\dosbox\\bc31.conf -noautoexec -noconsole -c \"mount C " + root + "\\DISK_C\" -c \"path C:\\BORLANDC\\BIN\"  -c C: -c \"cd ${relativeFileDirname}\" -c \"prj2mak ${fileBasenameNoExtension}.prj ${fileBasenameNoExtension}.mak\" -c \"make -f ${fileBasenameNoExtension}.mak\" -c " + dir + ".\\${fileBasenameNoExtension}.exe";
+
 		}
-		
-		const root = vscode.workspace.workspaceFolders[0].uri.fsPath + "\\..";
-		const cmd = root + "\\dosbox\\dosbox.exe -conf "+ root + "\\dosbox\\dosbox.conf -noconsole -c C: -c \"cd ${relativeFileDirname}\" -c \"prj2mak ${fileBasenameNoExtension}.prj ${fileBasenameNoExtension}.mak\" -c \"make -f ${fileBasenameNoExtension}.mak\" -c ${fileBasenameNoExtension}.exe";
-		vscode.tasks.executeTask(new vscode.Task({"type":"shell"},vscode.TaskScope.Workspace,"bc-build",'npm',new vscode.ShellExecution(cmd)));
-		// Display a message box to the user
-	});
+        vscode.tasks.executeTask(new vscode.Task({ "type": "shell" }, vscode.TaskScope.Workspace, "bc-build", 'npm', new vscode.ShellExecution(cmd)));
+        // Display a message box to the user
+    });
 
 	context.subscriptions.push(disposable1);
 	context.subscriptions.push(disposable2);

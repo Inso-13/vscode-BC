@@ -2,10 +2,11 @@
 	"name": "borland-c",
 	"displayName": "Borland C",
 	"icon": "bcicon.png",
+	"repository": {"url": "https://github.com/aia-inso/vscode-BC"},
 	"description": "God bless HUST AIA",
 	"author": {"name": "inso"},
 	"publisher": "inso",
-	"version": "1.0.0",
+	"version": "1.0.3",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
@@ -24,7 +25,10 @@
 			"type":"object",
 			"title": "Borland C",
 			"properties": {
-				
+				"BC.prj_out_dir":{
+					"type":"string",
+					"description": "工程输出目录（应填写完整的虚拟目录，如C:\\BORLANDC\\BIN）"
+				}
 			}
 		},
 		"commands": [
