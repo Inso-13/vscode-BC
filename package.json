@@ -6,7 +6,7 @@
 	"description": "God bless HUST AIA",
 	"author": {"name": "inso"},
 	"publisher": "inso",
-	"version": "1.0.4",
+	"version": "1.0.6",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
@@ -17,7 +17,8 @@
 		"onCommand:borland-c.dosbox",
 		"onCommand:borland-c.bc31",
 		"onCommand:borland-c.bc-compile",
-		"onCommand:borland-c.bc-build"
+		"onCommand:borland-c.bc-build",
+		"onCommand:borland-c.bc-open-prj"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -47,6 +48,10 @@
 			{
 				"command": "borland-c.bc-build",
 				"title": "BC构建工程"
+			},
+			{
+				"command": "borland-c.bc-open-prj",
+				"title": "BC打开工程"
 			}
 		]
 	},
