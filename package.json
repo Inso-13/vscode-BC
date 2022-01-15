@@ -6,7 +6,7 @@
 	"description": "God bless HUST AIA",
 	"author": {"name": "inso"},
 	"publisher": "inso",
-	"version": "1.0.7",
+	"version": "1.0.9",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
